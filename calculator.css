@@ -1,0 +1,85 @@
+/*  container */
+#container {
+    display: grid;  
+    grid-template-columns: repeat(4, 100px);
+    grid-template-rows: minmax(150px, auto) repeat(5, 80px);
+    background-color: #44454b; 
+  }
+  
+  
+  /* Display Screen */
+  #displayDiv {
+    font-size:60px;
+    padding: auto;
+    border-style: solid;
+    background-color: #a9d376;
+    font-family: sans-serif;
+    grid-column: 1 / 5;
+    grid-row: 1 / 1;
+    height:130px;
+  }
+  
+  
+  /*Buttons*/
+  .number {
+      background-color: #797979;
+      border: none;
+      color: white;
+      padding: 2px;
+      font-size: 40px;
+      margin: 2px;
+      border-radius: 10px;   
+  }
+  
+  .number:active {
+      background-color: #575757;
+      transform: translateY(2px);
+  }
+  
+  .operator {
+      background-color: #40a088;
+      border: none;
+      color: white;
+      padding: 2px;
+      font-size: 40px;
+      margin: 2px;
+      border-radius: 10px;
+  }
+  
+  .operator:active {
+    background-color: #276152;
+    transform: translateY(2px);
+  }
+  
+  #eqlsBtn {
+      background-color: #e98746;
+      font-size: 26px;
+      color: white;
+      border: none;
+      color: white;
+      padding: 20px;
+      font-size: 40px;
+      margin: 2px;
+      border-radius: 10px;
+  }
+  
+  #eqlsBtn:active {
+    background-color: #7e4a27;
+    transform: translateY(2px);
+  }
+  
+  #acBtn {
+      background-color: #d84747;
+      border: none;
+      color: white;
+      padding: 20px;
+      font-size: 40px;
+      margin: 2px;
+      border-radius: 10px;
+  }
+  
+  #acBtn:active {
+    background-color: #7e3636;
+    transform: translateY(2px);
+  }
+  
