@@ -37,14 +37,17 @@ function enterNum(e) {
 displayDummy.textContent = "";
   
 if (operatorActive === false) {
-  displayValue.textContent += e.target.textContent;
+  // Adds to display value  (Maybe check here if display value contains "." if so, disable decimal button)
+  displayValue.textContent += e.target.textContent; 
 } else {
+  // Wipes display and lets you start a new display value after pressing an operator 
   operatorActive = false;
   displayValue.textContent = "";
   displayValue.textContent += e.target.textContent;
   };
   console.log("Display Value", e.target.textContent);
 };
+
 
 
 [...operators].forEach(elem => elem.addEventListener('click', enterOperator));
@@ -57,8 +60,12 @@ if (e.target.textContent === "/") globalOperator = "divide";
 
 // Start fresh after dividing by 0 and getting snarky response.
 if (displayValue.textContent === "Inappropriate") displayValue.textContent = 0;
-// If first button that is pressed is an operator it sets display value to 0 
-if (displayDummy.textContent === "0") displayValue.textContent = 0;
+
+
+if (displayDummy.textContent === "0") {
+  displayValue.textContent = 0;   // if first button press is operator, sets firstOperand 0
+  displayDummy.textContent = "";  // empties display dummy text to not visually stay around
+};
 
 // Is used for when entering number to prompt display to change to a new string
 operatorActive = true;
@@ -79,9 +86,15 @@ function operate(a, b, operator) {
 a = firstOperand;
 b = parseFloat(displayValue.textContent);
 
-if (a / b === Infinity) return "Inappropriate";
+// Stops try to divide by 0, even after pressing equals first.
+if (a / b === Infinity || a === 0 && b === 0 && globalOperator === "divide") {
+  return "Inappropriate";  
+};
+
+// Just keeps display value if equals is pressed and no operator has been assigned
 if (operator === undefined) return parseFloat(displayValue.textContent); 
 
+// Operates and returns sum
 if (operator === "add") {
   return add(a, b);
   } else if (operator === "subtract") {
@@ -99,17 +112,27 @@ function equals() {
 
 operatorActive = true;
 
+// if equals is pressed before any numbers / operators it sets both operands to 0
+if (displayDummy.textContent === "0") {
+  firstOperand = 0;
+  displayValue.textContent = 0;
+  displayDummy.textContent = "";
+} 
+
   console.log("Equals Pressed:", globalOperator,
   " First Opperand: ", firstOperand, "Second Opperand: ", parseFloat(displayValue.textContent));
 
+// Sets total to the returned value of operate function
 total = operate(firstOperand, parseFloat(displayValue.textContent), globalOperator);
-  
+
+// if the returned value from operate was inappropriate, set variables to 0. 
 if (total === "Inappropriate") {
-  firstOperand = null;
-  previousValue = null;
+  firstOperand = 0;
+  previousValue = 0;
   total = 0;
   displayValue.textContent = "Inappropriate";
-} else {
+// Else set total to round to 3 decimal places If needed.
+} else { 
   total = +total.toFixed(3);
   previousValue = total;
   displayValue.textContent = total;
