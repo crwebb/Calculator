@@ -56,25 +56,25 @@ if (operatorActive === false) {
 [...operators].forEach(elem => elem.addEventListener('click', enterOperator));
 function enterOperator(e) {
 
+let symbol = e.target.textContent;
 
 operatorActive = true;
 
 firstOperand = parseFloat(displayValue.textContent);
 
+if (symbol === "+") globalOperator = "add";
+if (symbol === "-") globalOperator = "subtract";
+if (symbol === "*") globalOperator = "multiply";
+if (symbol === "/") globalOperator = "divide";
+if (symbol === "=") lastButton = "equals";
 
-if (e.target.textContent === "+") globalOperator = "add", lastButton = "operator";
-if (e.target.textContent === "-") globalOperator = "subtract", lastButton = "operator";
-if (e.target.textContent === "*") globalOperator = "multiply", lastButton = "operator";
-if (e.target.textContent === "/") globalOperator = "divide", lastButton = "operator";
-if (e.target.textContent === "=") lastButton = "equals";
 
-
-if ( e.target.textContent === "+" || "-" || "*" || "/" ) {
+if (symbol === "+" || symbol === "-" || symbol === "*" || symbol === "/") {
 
   console.log("Operator Chain Path")
   equals("OperatorChain");
 
-} else if (e.target.textContent === "=") {
+} else if (symbol === "=") {
 
   console.log("Equals Path")
   equals();
@@ -88,19 +88,23 @@ function equals(arg1) {
 
 operatorActive = true;
 
+if (previousOperator === undefined) previousOperator = globalOperator;
+
 if (arg1 === "OperatorChain") {
+    
+  if (lastButton === "equals") {
+    displayValue.textContent = total;
+    lastButton = "";
+    
+    } else {
+      secondOperand = parseFloat(displayValue.textContent);
+      total = operate(total, secondOperand, previousOperator);
+    }
 
-  if (previousOperator === undefined) previousOperator = globalOperator;
+} else {
 
-    secondOperand = parseFloat(displayValue.textContent);
-    total = operate(total, secondOperand, previousOperator);
-
-  } else {
-
-    secondOperand = parseFloat(displayValue.textContent);
-
-    total = operate(total, secondOperand, previousOperator);
-    //total = operate(firstOperand, secondOperand, globalOperator);
+  secondOperand = parseFloat(displayValue.textContent);
+  total = operate(total, secondOperand, globalOperator);
 };
 
 previousOperator = globalOperator;
