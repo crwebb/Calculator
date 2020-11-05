@@ -23,23 +23,27 @@ let displayValue = document.getElementById("displayValue");
 let displayDummy = document.getElementById("displayDummy");
 
 let eqlsBtn = document.getElementById("eqlsBtn");
-let globalOperator;
+
 let operatorActive = false;
 
 let firstOperand = null;
-let previousValue = null;
-let total = null;
+let secondOperand = null;
+let total = 0;
+
+let previousOperator;
+let globalOperator;
+let lastButton;
 
 
 [...numbers].forEach(elem => elem.addEventListener('click', enterNum));
 function enterNum(e) {
 
 displayDummy.textContent = "";
-  
+
 if (operatorActive === false) {
   // Adds to display value  (Maybe check here if display value contains "." if so, disable decimal button)
   displayValue.textContent += e.target.textContent; 
-} else {
+}  else {
   // Wipes display and lets you start a new display value after pressing an operator 
   operatorActive = false;
   displayValue.textContent = "";
@@ -49,52 +53,66 @@ if (operatorActive === false) {
 };
 
 
-
 [...operators].forEach(elem => elem.addEventListener('click', enterOperator));
 function enterOperator(e) {
 
-if (e.target.textContent === "+") globalOperator = "add";
-if (e.target.textContent === "-") globalOperator = "subtract";
-if (e.target.textContent === "*") globalOperator = "multiply";
-if (e.target.textContent === "/") globalOperator = "divide";
 
-// Start fresh after dividing by 0 and getting snarky response.
-if (displayValue.textContent === "Inappropriate") displayValue.textContent = 0;
-
-
-if (displayDummy.textContent === "0") {
-  displayValue.textContent = 0;   // if first button press is operator, sets firstOperand 0
-  displayDummy.textContent = "";  // empties display dummy text to not visually stay around
-};
-
-// Is used for when entering number to prompt display to change to a new string
 operatorActive = true;
 
 firstOperand = parseFloat(displayValue.textContent);
 
-if (previousValue === null) {
-  displayValue.textContent = firstOperand;
-} else {
-  displayValue.textContent = previousValue;
-}
-console.log("Operator Pressed:", e.target.textContent, globalOperator);
+
+if (e.target.textContent === "+") globalOperator = "add", lastButton = "operator";
+if (e.target.textContent === "-") globalOperator = "subtract", lastButton = "operator";
+if (e.target.textContent === "*") globalOperator = "multiply", lastButton = "operator";
+if (e.target.textContent === "/") globalOperator = "divide", lastButton = "operator";
+if (e.target.textContent === "=") lastButton = "equals";
+
+
+if ( e.target.textContent === "+" || "-" || "*" || "/" ) {
+
+  console.log("Operator Chain Path")
+  equals("OperatorChain");
+
+} else if (e.target.textContent === "=") {
+
+  console.log("Equals Path")
+  equals();
+
+  };
 };
+ 
+
+
+function equals(arg1) {
+
+operatorActive = true;
+
+if (arg1 === "OperatorChain") {
+
+  if (previousOperator === undefined) previousOperator = globalOperator;
+
+    secondOperand = parseFloat(displayValue.textContent);
+    total = operate(total, secondOperand, previousOperator);
+
+  } else {
+
+    secondOperand = parseFloat(displayValue.textContent);
+
+    total = operate(total, secondOperand, previousOperator);
+    //total = operate(firstOperand, secondOperand, globalOperator);
+};
+
+previousOperator = globalOperator;
+displayValue.textContent = total;
+
+console.log("Total: ", total)
+};
+
+
 
 
 function operate(a, b, operator) {
-
-a = firstOperand;
-b = parseFloat(displayValue.textContent);
-
-// Stops try to divide by 0, even after pressing equals first.
-if (a / b === Infinity || a === 0 && b === 0 && globalOperator === "divide") {
-  return "Inappropriate";  
-};
-
-// Just keeps display value if equals is pressed and no operator has been assigned
-if (operator === undefined) return parseFloat(displayValue.textContent); 
-
-// Operates and returns sum
 if (operator === "add") {
   return add(a, b);
   } else if (operator === "subtract") {
@@ -104,41 +122,8 @@ if (operator === "add") {
   } else if (operator === "divide") {
   return divide(a, b);
   };
- };
-
-
-eqlsBtn.addEventListener("click", equals);
-function equals() {
-
-operatorActive = true;
-
-// if equals is pressed before any numbers / operators it sets both operands to 0
-if (displayDummy.textContent === "0") {
-  firstOperand = 0;
-  displayValue.textContent = 0;
-  displayDummy.textContent = "";
-} 
-
-  console.log("Equals Pressed:", globalOperator,
-  " First Opperand: ", firstOperand, "Second Opperand: ", parseFloat(displayValue.textContent));
-
-// Sets total to the returned value of operate function
-total = operate(firstOperand, parseFloat(displayValue.textContent), globalOperator);
-
-// if the returned value from operate was inappropriate, set variables to 0. 
-if (total === "Inappropriate") {
-  firstOperand = 0;
-  previousValue = 0;
-  total = 0;
-  displayValue.textContent = "Inappropriate";
-// Else set total to round to 3 decimal places If needed.
-} else { 
-  total = +total.toFixed(3);
-  previousValue = total;
-  displayValue.textContent = total;
-}
-  console.log("Total: ", total)
 };
+
 
 
 function add(a, b) {
@@ -148,28 +133,44 @@ function add(a, b) {
 
 function subtract(a, b) {
   console.log("Subtract was called: ", "First Opperand:", a, "Second Opperand: ",  b);
-  return a - b;
+  if ( a === 0) {
+      return b - a 
+  } else {
+      return a - b;
+  };
 };
 
 function multiply(a, b) {
   console.log("Multiply was called: ", "First Opperand:", a, "Second Opperand: ",  b);
-  return a * b;
+  if (a * b === 0) {
+      return b;
+  } else { 
+      return a * b;
+  };
 };
 
 function divide(a, b) {
   console.log("Divide was called: ", "First Opperand:", a, "Second Opperand: ",  b);
-  return a / b;
+  if (b === 0) {
+    return "Inappropriate";
+} else if (a / b === 0) { 
+    return b;
+  } else {
+    return a / b
+  };
 };
+
 
 acBtn.addEventListener("click", allClear);
 function allClear() {
-  //  globalOperator =  null/undefined ? ;
+  globalOperator =  undefined;
+  previousOperator = undefined;
   firstOperand = null;
-  previousValue = null;
-  total = null;
+  total = 0;
   displayValue.textContent = "";
   displayDummy.textContent = "0";
 };
+
 
 
 /* DELETE BUTTON This works but get the operators to chain first
