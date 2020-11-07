@@ -19,7 +19,9 @@ let mulBtn = document.getElementById("mulBtn");
 let divBtn = document.getElementById("divBtn");
 let acBtn = document.getElementById("acBtn");
 
+
 let displayValue = document.getElementById("displayValue");
+let displayDiv = document.getElementById("displayDiv");
 let displayDummy = document.getElementById("displayDummy");
 
 let eqlsBtn = document.getElementById("eqlsBtn");
@@ -35,10 +37,21 @@ let globalOperator;
 let lastButton;
 
 
+
 [...numbers].forEach(elem => elem.addEventListener('click', enterNum));
 function enterNum(e) {
 
-displayDummy.textContent = "";
+  displayDummy.remove();
+
+  if (lastButton === "AC") {
+  
+    total = 0;
+    displayValue.textContent = 0;
+    displayValue.textContent = "";
+    displayDiv.appendChild(displayValue);
+    lastButton = "number";
+  }
+
 
 if (operatorActive === false) {
   // Adds to display value  (Maybe check here if display value contains "." if so, disable decimal button)
@@ -167,12 +180,21 @@ function divide(a, b) {
 
 acBtn.addEventListener("click", allClear);
 function allClear() {
+
+  lastButton = "AC";
+  displayValue.remove();
+
+  displayDiv.appendChild(displayDummy);
+  displayDummy.textContent = 0;
+
+
   globalOperator =  undefined;
   previousOperator = undefined;
   firstOperand = null;
   total = 0;
-  displayValue.textContent = "";
-  displayDummy.textContent = "0";
+
+  console.log(displayValue.textContent, "Display Value")
+  console.log(displayDummy.textContent, "Display Dummy")
 };
 
 

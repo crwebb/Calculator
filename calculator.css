@@ -12,7 +12,6 @@
 
 /* Display Screen */
 #displayDiv {
-
   grid-column: 1/5;
   font-size:60px;
   border-style: solid;
@@ -21,6 +20,35 @@
   height:100px;
   border-radius: 25px;  
 }
+
+#displayDiv p {
+
+  margin-top: 20px;
+  font-size:60px;
+  font-family: sans-serif;
+}
+
+/*
+#displayDummy {
+  margin-top: 20px;
+  grid-column: 1/5;
+  font-size:60px;
+  background-color: #ddf0c8;
+  font-family: sans-serif;
+  height:100px;
+  border-radius: 25px;  
+}
+
+#displayValue {
+  margin-top: 20px;
+  grid-column: 1/5;
+  font-size:60px;
+  background-color: #ddf0c8;
+  font-family: sans-serif;
+  height:100px;
+  border-radius: 25px;  
+}
+*/
 
 /*Buttons*/
 .number {
@@ -54,7 +82,7 @@
   margin: 2px;
   border-radius: 10px;
   grid-column: 4/4;
-  grid-row: 4/6;
+  grid-row: 5/7;
   
 }
 
@@ -86,8 +114,6 @@
   margin: 2px;
   border-radius: 10px;   
 }
-
-
 
 
 #delBtn:active {
