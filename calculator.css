@@ -1,58 +1,40 @@
 /*  container */
 #container {
+  margin-left: 50px;
+  margin-top: 50px;
   height: 450px;
   width: 300px;
   display: grid;  
   grid-template-columns: repeat(4, 1fr);
   grid-auto-rows: minmax(50px, auto);
-  background-color: #44454b; 
+  background-color: #3f4046; 
   padding: 10px;
-  border-radius: 25px; 
+  border-radius: 20px; 
 }
 
 /* Display Screen */
 #displayDiv {
+  margin-top: 10px;
   grid-column: 1/5;
-  font-size:60px;
   border-style: solid;
   background-color: #ddf0c8;
   font-family: sans-serif;
-  height:100px;
-  border-radius: 25px;  
+  height:80px;
+  border-radius: 20px;  
 }
 
 #displayDiv p {
-
-  margin-top: 20px;
-  font-size:60px;
+  color: #f71ba2; /* CHANGE TO BLACK WHEN YOU FIXED PRESSING AN OPERATOR BEFORE ANYTHING ELSE */
+  margin-top: 11px;
+  margin-left: 3px;
+  font-size:52px;
   font-family: sans-serif;
 }
 
-/*
-#displayDummy {
-  margin-top: 20px;
-  grid-column: 1/5;
-  font-size:60px;
-  background-color: #ddf0c8;
-  font-family: sans-serif;
-  height:100px;
-  border-radius: 25px;  
-}
-
-#displayValue {
-  margin-top: 20px;
-  grid-column: 1/5;
-  font-size:60px;
-  background-color: #ddf0c8;
-  font-family: sans-serif;
-  height:100px;
-  border-radius: 25px;  
-}
-*/
 
 /*Buttons*/
 .number {
-  background-color: #797979;
+  background-color: #838383;
   border: none;
   color: white;
   padding: 2px;

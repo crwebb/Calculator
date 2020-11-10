@@ -18,22 +18,21 @@ let subBtn = document.getElementById("subBtn");
 let mulBtn = document.getElementById("mulBtn");
 let divBtn = document.getElementById("divBtn");
 let acBtn = document.getElementById("acBtn");
-
+let eqlsBtn = document.getElementById("eqlsBtn");
 
 let displayValue = document.getElementById("displayValue");
 let displayDiv = document.getElementById("displayDiv");
 let displayDummy = document.getElementById("displayDummy");
 
-let eqlsBtn = document.getElementById("eqlsBtn");
-
-let operatorActive = false;
-
 let firstOperand = null;
 let secondOperand = null;
 let total = null;
 
-let previousOperator;
+let previousOperator = undefined;
 let globalOperator = undefined;
+
+
+let operatorActive = false;
 let lastButton;
 
 
@@ -62,12 +61,12 @@ if (operatorActive === false) {
   displayValue.textContent = "";
   displayValue.textContent += e.target.textContent;
   };
-  console.log("Display Value", e.target.textContent);
 
+  console.log("Display Value", e.target.textContent);
   console.log(total, "total")
-  // console.log(firstOperand)
   console.log(secondOperand, "secondOperand")
 };
+
 
 
 [...operators].forEach(elem => elem.addEventListener('click', enterOperator));
@@ -88,26 +87,22 @@ if (symbol === "=") lastButton = "equals";
 
 if (symbol === "+" || symbol === "-" || symbol === "*" || symbol === "/") {
 
-  /* When an operator is pressed, if second operand is less than total and total === 0,
-   set total to be value of second operand */
   if (secondOperand > total && total === 0) total = secondOperand;
 
-  console.log("Operator Chain Path");
+  console.log("Operator Chain Path")
   equals("OperatorChain");
 
-  /* If user presses equals before anything else, 
-  check if globalOperator has changed, set variable values to 0*/
 } else if (symbol === "=" && globalOperator === undefined) {
 
-  console.log("NO GLOBAL OPERATOR BEFORE EQUALS");
+  console.log("NO GLOBAL OPERATOR BEFORE EQUALS")
   displayDummy.remove();
-  displayValue.textContent = "0";
+  displayValue.textContent = 0;
 
   equals();
 
 } else if (symbol === "=") {
-  console.log("Equals Path");
-  equals();
+    console.log("Equals Path")
+    equals();
   }; 
 
   console.log(total, "total")
@@ -142,10 +137,8 @@ if (arg1 === "OperatorChain") {
 previousOperator = globalOperator;
 displayValue.textContent = parseFloat(total);
 
-
-console.log(total, "total");
-console.log(secondOperand, "second operand");
-
+console.log(total, "total")
+console.log(secondOperand, "second operand")
 };
 
 
@@ -154,17 +147,16 @@ function operate(a, b, operator) {
 if (globalOperator === undefined) return 0;
 
 if (operator === "add") {
+  console.log(total, "total")
+  console.log(secondOperand, "secondOperand")
 
-  console.log(total, "total");
-  console.log(secondOperand, "secondOperand");
-
-    return add(a, b);
-} else if (operator === "subtract") {
-    return subtract(a, b); 
-} else if (operator === "multiply") {
-    return multiply(a, b);
-} else if (operator === "divide") {
-    return divide(a, b);
+  return add(a, b);
+  } else if (operator === "subtract") {
+  return subtract(a, b); 
+  } else if (operator === "multiply") {
+  return multiply(a, b);
+  } else if (operator === "divide") {
+  return divide(a, b);
   };
 };
 
@@ -176,8 +168,8 @@ function add(a, b) {
 
 function subtract(a, b) {
   console.log("Subtract was called: ", "Total (First Operand)", a, "Second Opperand: ",  b);
-  if ( a === 0) {
-      return b - a   // If total === 0 this stops the - operator making the expression -X
+  if ( a === null) {
+      return b - a 
   } else {
       return a - b;
   };
@@ -185,7 +177,7 @@ function subtract(a, b) {
 
 function multiply(a, b) {
   console.log("Multiply was called: ", "Total (First Operand)", a, "Second Opperand: ",  b);
-  if (a * b === 0) { // Without this, multiplying by 0 makes the display flick to 0 too early
+  if (a * b === 0) { 
       return b; 
   } else { 
       return a * b;
@@ -195,8 +187,8 @@ function multiply(a, b) {
 function divide(a, b) {
   console.log("Divide was called: ", "Total (First Operand)", a, "Second Opperand: ",  b);
   if (b === 0) {
-    return "Inappropriate"; // Stops total being divded by 0
-} else if (a / b === 0) {   // Stops total being divded by 0
+    return "Inappropriate"; 
+} else if (a / b === 0) {
     return b;
   } else {
     return a / b
@@ -220,6 +212,7 @@ function allClear() {
   secondOperand = null;
   total = null;
 };
+
 
 /* DELETE BUTTON This works but get the operators to chain first
 delBtn.addEventListener("click", deleteChar);
