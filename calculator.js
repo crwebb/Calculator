@@ -1,3 +1,12 @@
+
+/*
+ BUGS 11/11/2020
+-- can't press an operator after another operator (including equals) without a number inbetween
+-- can enter up to 10 digits in the display, but if a total is above 10 digits it over populates
+-- cant press divide before anything else 
+-- can enter multiple decimals
+*/
+
 // DOM
 let numbers = document.getElementsByClassName("number");
 let num1 = document.getElementById("num1");
@@ -36,7 +45,6 @@ let operatorActive = false;
 let lastButton;
 
 
-
 [...numbers].forEach(elem => elem.addEventListener('click', enterNum));
 function enterNum(e) {
 
@@ -51,15 +59,24 @@ function enterNum(e) {
     lastButton = "number";
   }
 
+  if (operatorActive === false) {
 
-if (operatorActive === false) {
+  lastButton = "number";
+
   // Adds to display value  (Maybe check here if display value contains "." if so, disable decimal button)
-  displayValue.textContent += e.target.textContent; 
-}  else {
-  // Wipes display and lets you start a new display value after pressing an operator 
-  operatorActive = false;
-  displayValue.textContent = "";
-  displayValue.textContent += e.target.textContent;
+  if (displayValue.textContent.length >= 10) {
+    console.log("Display Limit Reached")
+  } else {
+    displayValue.textContent += e.target.textContent; 
+    console.log(typeof displayValue.textContent);
+  };
+
+  } else {
+    // Wipes display and lets you start a new display value after pressing an operator 
+    operatorActive = false;
+    lastButton = "number";
+    displayValue.textContent = "";
+    displayValue.textContent += e.target.textContent;
   };
 
   console.log("Display Value", e.target.textContent);
@@ -68,95 +85,112 @@ if (operatorActive === false) {
 };
 
 
-
 [...operators].forEach(elem => elem.addEventListener('click', enterOperator));
 function enterOperator(e) {
 
-let symbol = e.target.textContent;
+  let symbol = e.target.textContent;
 
-operatorActive = true;
+  operatorActive = true;
 
-secondOperand = parseFloat(displayValue.textContent);
+  if (lastButton === undefined) {
+    displayDummy.remove();
+    displayValue.textContent = 0;
+    total = 0;
+    equals("OperatorChain");
+    secondOperand = parseFloat(displayValue.textContent);
+  }; 
 
-if (symbol === "+") globalOperator = "add";
-if (symbol === "-") globalOperator = "subtract";
-if (symbol === "*") globalOperator = "multiply";
-if (symbol === "/") globalOperator = "divide";
-if (symbol === "=") lastButton = "equals";
+
+  if (symbol === "+") globalOperator = "add";
+  if (symbol === "-") globalOperator = "subtract";
+  if (symbol === "*") globalOperator = "multiply";
+  if (symbol === "/") globalOperator = "divide";
+  if (symbol === "=") lastButton = "equals";
 
 
-if (symbol === "+" || symbol === "-" || symbol === "*" || symbol === "/") {
+  if (symbol === "+" || symbol === "-" || symbol === "*" || symbol === "/") {
 
-  if (secondOperand > total && total === 0) total = secondOperand;
+    if (secondOperand > total && total === 0) total = secondOperand;
 
-  console.log("Operator Chain Path")
-  equals("OperatorChain");
+    console.log("Operator Chain Path")
+    equals("OperatorChain");
 
-} else if (symbol === "=" && globalOperator === undefined) {
+  } else if (symbol === "=" && globalOperator === undefined) {
 
-  console.log("NO GLOBAL OPERATOR BEFORE EQUALS")
-  displayDummy.remove();
-  displayValue.textContent = 0;
+    console.log("NO GLOBAL OPERATOR BEFORE EQUALS")
+    displayDummy.remove();
+    displayValue.textContent = 0;
 
-  equals();
-
-} else if (symbol === "=") {
-    console.log("Equals Path")
     equals();
+
+  } else if (symbol === "=") {
+      console.log("Equals Path")
+      equals();
   }; 
 
   console.log(total, "total")
   console.log(secondOperand, "secondOperand")
 };
- 
 
 
 function equals(arg1) {
 
-operatorActive = true;
+  operatorActive = true;
 
-if (previousOperator === undefined) previousOperator = globalOperator;
+  if (previousOperator === undefined) previousOperator = globalOperator;
 
-if (arg1 === "OperatorChain") {
-    
-  if (lastButton === "equals") {
+  if (arg1 === "OperatorChain") {
+      
+    if (lastButton === "equals") {
+      displayValue.textContent = total;
+      lastButton = "";
+
+      } else {
+
+        secondOperand = parseFloat(displayValue.textContent);
+        total = operate(total, secondOperand, previousOperator);
+      }
+
+  } else {
+    secondOperand = parseFloat(displayValue.textContent);
+    total = operate(total, secondOperand, globalOperator);
+  };
+
+  if (total === "Inappropriate") {
+    displayValue.textContent = "Inappropriate";
+    // Else set total to round to 3 decimal places If needed.
+  } else { 
+
+    total = +total.toFixed(3);
     displayValue.textContent = total;
-    lastButton = "";
-    
-    } else {
-      secondOperand = parseFloat(displayValue.textContent);
-      total = operate(total, secondOperand, previousOperator);
-    }
 
-} else {
+    /*    This cuts off the total becoming too big for the screen
+    let limitedTotal = total.toString().substr(0, 10);
+    displayValue.textContent = limitedTotal;
+    total = displayValue.textContent;
+    */
 
-  secondOperand = parseFloat(displayValue.textContent);
-  total = operate(total, secondOperand, globalOperator);
-};
+  }
 
-previousOperator = globalOperator;
-displayValue.textContent = parseFloat(total);
+  previousOperator = globalOperator;
 
-console.log(total, "total")
-console.log(secondOperand, "second operand")
+  console.log(total, "total")
+  console.log(secondOperand, "second operand")
 };
 
 
 function operate(a, b, operator) {
 
-if (globalOperator === undefined) return 0;
+  if (globalOperator === undefined) return 0;
 
-if (operator === "add") {
-  console.log(total, "total")
-  console.log(secondOperand, "secondOperand")
-
-  return add(a, b);
+  if (operator === "add") {
+      return add(a, b);
   } else if (operator === "subtract") {
-  return subtract(a, b); 
+      return subtract(a, b); 
   } else if (operator === "multiply") {
-  return multiply(a, b);
+     return multiply(a, b);
   } else if (operator === "divide") {
-  return divide(a, b);
+      return divide(a, b);
   };
 };
 
@@ -165,6 +199,7 @@ function add(a, b) {
   console.log("Add was called: ", "Total (First Operand)", a, "Second Opperand: ",  b);
   return a + b;
 };
+
 
 function subtract(a, b) {
   console.log("Subtract was called: ", "Total (First Operand)", a, "Second Opperand: ",  b);
@@ -175,25 +210,30 @@ function subtract(a, b) {
   };
 };
 
+
 function multiply(a, b) {
   console.log("Multiply was called: ", "Total (First Operand)", a, "Second Opperand: ",  b);
-  if (a * b === 0) { 
+
+  if ( a === 0 || a === null && b !== 0) { 
+    console.log("GONNA RETURN B")
       return b; 
   } else { 
       return a * b;
   };
 };
 
+
 function divide(a, b) {
   console.log("Divide was called: ", "Total (First Operand)", a, "Second Opperand: ",  b);
   if (b === 0) {
-    return "Inappropriate"; 
-} else if (a / b === 0) {
-    return b;
+      return "Inappropriate"; 
+  } else if (a / b === 0) {
+      return b;
   } else {
-    return a / b
+      return a / b
   };
 };
+
 
 acBtn.addEventListener("click", allClear);
 function allClear() {
@@ -214,23 +254,32 @@ function allClear() {
 };
 
 
-/* DELETE BUTTON This works but get the operators to chain first
 delBtn.addEventListener("click", deleteChar);
 function deleteChar() {
-let displayString = displayValue.textContent;
-let editedDisplayString = displayString.slice(0, -1)
-if (editedDisplayString.length === 0) {
-  displayValue.textContent = 0;
-} else if (total !== null && editedDisplayString.length === 0) {
-  operatorActive = true;
-  displayValue.textContent = total;
-} else if (displayValue.textContent === "Inappropriate") {
-  operatorActive = true;
-  displayValue.textContent = total;
-  
-} else {
- 
+
+  let displayString = displayValue.textContent;
+  let editedDisplayString = displayString.slice(0, -1)
+
+  if (editedDisplayString.length === 0) {
+
+    displayValue.remove();
+    displayDiv.appendChild(displayDummy);
+    displayValue.textContent = "";
+    displayDiv.appendChild(displayValue);
+
+  } else if (total !== null && editedDisplayString.length === 0) {
+
+    operatorActive = true;
+    displayValue.textContent = total;
+
+  } else if (displayValue.textContent === "Inappropriate") {
+
+    operatorActive = true;
+    displayValue.textContent = total;
+    
+  } else {
+
     displayValue.textContent = editedDisplayString;
   };
 };  
-// */
+

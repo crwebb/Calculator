@@ -1,106 +1,102 @@
 /*  container */
 #container {
-  margin-left: 50px;
-  margin-top: 50px;
+  display: grid; 
+  grid-template-columns: repeat(4, 1fr);
+  grid-auto-rows: minmax(50px, auto); 
   height: 450px;
   width: 300px;
-  display: grid;  
-  grid-template-columns: repeat(4, 1fr);
-  grid-auto-rows: minmax(50px, auto);
-  background-color: #3f4046; 
+  margin-left: 50px;
+  margin-top: 50px;
   padding: 10px;
   border-radius: 20px; 
+  background-color: #3c3d42; 
 }
 
 /* Display Screen */
 #displayDiv {
-  margin-top: 10px;
+  display: grid; 
+  justify-items: end;
+  align-items: center;
   grid-column: 1/5;
-  border-style: solid;
+  height: 70px;
+  margin: 5px;
+  margin-top: 10px;
   background-color: #ddf0c8;
-  font-family: sans-serif;
-  height:80px;
   border-radius: 20px;  
+  font-family: sans-serif;
 }
 
 #displayDiv p {
-  color: #f71ba2; /* CHANGE TO BLACK WHEN YOU FIXED PRESSING AN OPERATOR BEFORE ANYTHING ELSE */
-  margin-top: 11px;
-  margin-left: 3px;
-  font-size:52px;
+  margin-top: 9px;
+  margin-right: 5px;
+  color: #141414; 
+  font-size:49px;
   font-family: sans-serif;
 }
 
-
 /*Buttons*/
 .number {
-  background-color: #838383;
-  border: none;
-  color: white;
-  padding: 2px;
-  font-size: 30px;
   margin: 2px;
+  padding: 2px;
+  border: none;
   border-radius: 10px;   
+  background-color: #838383;
+  color: white;
+  font-size: 30px;
 }
-
 
 .operator {
+  margin: 2px;
   background-color: #40a088;
   border: none;
+  border-radius: 10px;
   color: white;
   font-size: 30px;
-  margin: 2px;
-  border-radius: 10px;
 }
 
-
 #eqlsBtn {
-  background-color: #e98746;
-  font-size: 26px;
-  color: white;
-  border: none;
-  color: white;
-  font-size: 30px;
-  margin: 2px;
-  border-radius: 10px;
   grid-column: 4/4;
   grid-row: 5/7;
-  
+  margin: 2px;
+  border: none;
+  border-radius: 10px;
+  background-color: #e98746;
+  color: white;
+  font-size: 36px;
 }
 
 #acBtn {
-  background-color: #d84747;
-  border: none;
-  color: white;
-  font-size: 30px;
   margin: 2px;
+  border: none;
   border-radius: 10px;
+  color: white;
+  background-color: #d84747;
+  font-size: 30px;
 }
 
 
 #delBtn {
-  background-color: #d84747;
+  margin: 2px;
   border: none;
+  border-radius: 10px;
+  background-color: #d84747;
   color: white;
   font-size: 30px;
-  margin: 2px;
-  border-radius: 10px;
 }
 
 #num0 {
   grid-column: 1/3;
-  background-color: #797979;
+  margin: 2px;
   border: none;
+  border-radius: 10px; 
+  background-color: #797979;
   color: white;
   font-size: 30px;
-  margin: 2px;
-  border-radius: 10px;   
 }
 
-
 #delBtn:active {
-background-color: #7e3636;
-transform: translateY(2px);
+  background-color: #7e3636;
+  transform: translateY(2px);
 }
 
 .operator:active {
@@ -117,7 +113,6 @@ transform: translateY(2px);
   background-color: #7e4a27;
   transform: translateY(2px);
 }
-
 
 .number:active {
   background-color: #575757;
